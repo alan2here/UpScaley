@@ -1,0 +1,17 @@
+The number of each example in ‘files’, along with other information.
+
+
+file - I/O/G/N - base image - (style image)/upscale - info
+
+Ground Truth 1 - ground truth
+Sample 1 - input
+Output 1 - output - ground truth 1 - upscale - colSimInc20 5x5
+
+Ground Truth 2 - ground truth
+Sample 2 - input
+Output 2-1 - output - ground truth 2 - upscale
+Output 2-2 - output - ground truth 2 - upscale - inc1
+Output 2-3 - neither - ... - enhanced copy of Output 2-1
+Output 2-4 - neither - ... - enhanced copy of Output 2-2
+
+[style transfers]
