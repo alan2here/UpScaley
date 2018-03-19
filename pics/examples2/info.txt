@@ -14,4 +14,8 @@ Output 2-2 - output - ground truth 2 - upscale - inc1
 Output 2-3 - neither - ... - enhanced copy of Output 2-1
 Output 2-4 - neither - ... - enhanced copy of Output 2-2
 
-[style transfers]
+Sample 3-1 - input
+Sample 3-2 - input
+Sample 3-3 - input
+Output 3-1 - output
+Output 3-2 - output
