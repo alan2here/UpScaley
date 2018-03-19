@@ -5,17 +5,17 @@ file - I/O/G/N - base image - (style image)/upscale - info
 
 Ground Truth 1 - ground truth
 Sample 1 - input
-Output 1 - output - ground truth 1 - upscale - colSimInc20 5x5
+Output 1 - output - sample 1 - upscale - colSimInc20 5x5
 
 Ground Truth 2 - ground truth
 Sample 2 - input
-Output 2-1 - output - ground truth 2 - upscale
-Output 2-2 - output - ground truth 2 - upscale - inc1
+Output 2-1 - output - sample 2 - upscale
+Output 2-2 - output - sample 2 - upscale - inc1
 Output 2-3 - neither - ... - enhanced copy of Output 2-1
 Output 2-4 - neither - ... - enhanced copy of Output 2-2
 
-Sample 3-1 - input
-Sample 3-2 - input
-Sample 3-3 - input
-Output 3-1 - output
-Output 3-2 - output
+Sample 3-1 - input - ... - base image
+Sample 3-2 - input - ... - style image
+Sample 3-3 - input - ... - style image
+Output 3-1 - output - sample 3-1 - sample 3-2
+Output 3-2 - output - sample 3-1 - sample 3-3
