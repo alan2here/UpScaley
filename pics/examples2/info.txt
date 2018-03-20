@@ -17,5 +17,5 @@ Output 2-4 - neither - ... - enhanced copy of Output 2-2
 Sample 3-1 - input - ... - base image
 Sample 3-2 - input - ... - style image
 Sample 3-3 - input - ... - style image
-Output 3-1 - output - sample 3-1 - sample 3-2
-Output 3-2 - output - sample 3-1 - sample 3-3
+Output 3-1 - output - sample 3-1 - sample 3-2 - 5x5
+Output 3-2 - output - sample 3-1 - sample 3-3 - 5x5
