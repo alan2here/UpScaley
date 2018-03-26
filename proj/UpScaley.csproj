@@ -60,12 +60,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="expand.cs" />
+    <Compile Include="img.cs" />
     <Compile Include="other.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RGB.cs" />
     <Compile Include="Score.cs" />
+    <Compile Include="style_transfer.cs" />
+    <Compile Include="tables.cs" />
     <Compile Include="unused.cs" />
     <Compile Include="UpScaley.cs" />
-    <Compile Include="write.cs" />
+    <Compile Include="writer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
