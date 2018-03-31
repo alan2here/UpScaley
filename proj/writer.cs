@@ -1,3 +1,8 @@
+// Code and concept by Alan Tennant, alan2here@gmail.com
+// Some code and concept by Tim Wesson, tim.wesson@gmail.com, see comments.
+// See https://github.com/alan2here/UpScaley
+// Subject to a licence, see the link above.
+
 namespace UpScaley
 {
     public class writer
