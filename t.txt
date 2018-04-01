@@ -1,0 +1,197 @@
+// A cut down (and less effective, performant and safe) version of just the style transfer.
+
+// Upscaling is achieved by using this function to transfer the style of the given image (style)
+// onto a bicubicly upscaled vertion of itself (base).
+
+// An "img" is a 2d array of "RGB" pixel colors.
+
+
+// Firstly as simple sudocode:
+
+style_transfer(img base, img style, Int32 replacement_size)
+{
+    for each square region of pixels in "base" replacement_size in size
+    except unfortunatly some pixels very near the edge
+    {
+        var best_rgb = new RGB();
+        var best_deviation = float.MaxValue;
+
+        for each square region of pixels in "style" replacement_size in size, dito with the edge
+        {
+            float deviation = how_different(region of base, region of style);
+            keep track of the best_deviation and its RGB colour
+        }
+
+        result[this pixel of base] = best_rgb;
+    }
+
+    return result;
+}
+
+how_different(region_a, region_b, Int32 region_size)
+{
+    return the similarity of 'a' and 'b', further in the negative direction is more similar
+}
+
+
+// Then as more involved sudocode:
+
+public static img style_transfer(img base, img style, Int32 replacement_size)
+{
+    replacement_size must be an odd number
+    byte base_and_result_width = base.RGB.GetLength(0), base_and_result_height = base.RGB.GetLength(1),
+        style_width = style.RGB.GetLength(0), style_height = style.RGB.GetLength(1),
+        half_replacement_size = (Int32)(replacement_size * 0.5f);
+    var result = new img(base_and_result_width, base_and_result_height);
+
+    for each integer pixel coordinate in base (base_x, base_y)
+    except unfortunatly some pixels very near the edge
+    {
+        var best_rgb = new RGB();
+        var best_deviation = float.MaxValue;
+
+        for each integer pixel coordinate in style, dito with the edge
+        {
+            // The parameters of "score" specify two square regions of pixels of the same size.
+            float deviation = score(base, style, base_x, base_y, style_x, style_y, replacement_size);
+
+            if (deviation <= best_deviation)
+            {
+                best_deviation = deviation;
+                best_rgb = style[style_x + half_replacement_size, style_y + half_replacement_size];
+            }
+        }
+
+        result[base_x + half_replacement_size, base_y + half_replacement_size] = best_rgb;
+    }
+
+    return result;
+}
+
+score(img a, img b, Int32 region_a_left, Int32 region_a_top,
+    Int32 region_b_left, Int32 region_b_top, Int32 region_size)
+{
+    return the similarity of 'a' and 'b', further in the negative direction is more similar
+}
+
+
+// Now as more or less functional code:
+
+using System;
+
+// cannot process close to the edge yet
+public static img style_transfer(img base, img style, Int32 replacement_size)
+{
+    if (replacement_size % 2 == 0)
+        throw new ArgumentException("replacement_size must be an odd number");
+    byte base_and_result_width = base.RGB.GetLength(0), base_and_result_height = base.RGB.GetLength(1),
+        style_width = style.RGB.GetLength(0), style_height = style.RGB.GetLength(1),
+        half_replacement_size = (Int32)(replacement_size * 0.5f);
+    var result = new img(base_and_result_width, base_and_result_height);
+
+    for (Int32 base_x = 0; base_x < base_and_result_width - replacement_size2; base_x++)
+    {
+        for (Int32 base_y = 0; base_y < base_and_result_height - replacement_size2; base_y++)
+        {
+            var best_rgb = new RGB();
+            var best_deviation = float.MaxValue;
+
+            for (Int32 style_x = 0, style_x < style_width - replacement_size; style_x++)
+            {
+                for (Int32 style_y = 0; style_y < style_height - replacement_size; style_y++)
+                {
+                    // The parameters of "score" specify two square regions of pixels of the same size.
+                    // In the actual code this "score" function is passed into the style_transfer function.
+                    float deviation = score(base, style, base_x, base_y, style_x, style_y, replacement_size);
+
+                    if (deviation <= best_deviation)
+                    {
+                        best_deviation = deviation;
+                        best_rgb = style[style_x + half_replacement_size, style_y + half_replacement_size];
+                    }
+                }
+            }
+
+            result[base_x + half_replacement_size, base_y + half_replacement_size] = best_rgb;
+        }
+    }
+
+    return result;
+}
+
+score(img a, img b, Int32 region_a_left, Int32 region_a_top,
+    Int32 region_b_left, Int32 region_b_top, Int32 region_size)
+{
+    float deviation;
+    for (Int32 x = 0; x < region_size; x++)
+        for (Int32 y = 0; y < region_size; y++)
+        {
+            RGB a2 = a[region_a_left + x, region_a_top + y];
+            RGB b2 = b[region_b_left + x, region_b_top + y];
+            deviation -= tables.recip_upTo769_offset5[
+                tables.abs_dif_retInt16[a2.r, b2.r] +
+                tables.abs_dif_retInt16[a2.g, b2.g] +
+                tables.abs_dif_retInt16[a2.b, b2.b]];
+        }
+
+    return deviation;
+}
+
+
+Thank you for reading this far, a quick asside:
+
+I won't do this because of possible performance issues
+and needing to do things between all the nested loops in style_transfer,
+but it'd be great to implement an array like "range" object,
+when asked lets say range1[N, M, P] you get a "new []{N, M, P}",
+the constructor taking a size in for the form of an array of numbers, for example {3, 5, 2},
+or being empty for a non-enumerable version.
+Maybe "FauxArray" would be a better name.
+
+// tada, all 4 loops in 1 foreach instead
+foreach (var region_coordinate in
+    new range(base_and_result_width_subtract_replacment_size,
+    base_and_result_height_subtract_replacment_size,
+    style_width_subtract_replacment_size,
+    style_height_subtract_replacment_size))
+{
+    // ...
+    Console.WriteLine(region_coordinate[0] + ", " region_coordinate[1]);
+}
+
+// more stuff
+Console.WriteLine();
+var r = new range(1000, 1000, 1000, 500);
+Console.WriteLine(r.element_count);
+Console.WriteLine();
+foreach (var n in new range()[1000, 45000000, 3, 1, 1, 8])
+    Console.WriteLine(n);
+
+
+Output:
+
+0, 0, 0, 0
+0, 0, 0, 1
+0, 0, 0, 2
+etc...
+0, 0, 1, 0
+0, 0, 1, 1
+0, 0, 1, 2
+etc...
+0, 0, 2, 0
+0, 0, 2, 1
+0, 0, 2, 2
+etc...
+etc...
+100, 100, 100, 98
+100, 100, 100, 99
+100, 100, 100, 100
+
+500000000000 // good thing its not actually using that much memory
+
+1000
+45000000
+3
+1
+1
+8
