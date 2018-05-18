@@ -1,1 +1,1 @@
-# UpScaley
+UpScaley is a C# program that upscales images intelligently, based on there content. It does not use neural networks and only needs the one imput image to produce a higher resolution output. See pics/examples/tree and then pics/examples2 for examples.
